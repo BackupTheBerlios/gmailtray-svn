@@ -17,7 +17,6 @@ Source: dist\*; DestDir: {app}
 [Icons]
 ; Group
 Name: "{group}\GmailTray"; Filename: "{app}\gmailtray.exe"
-Name: "{group}\License"; Filename: "{app}\LICENSE.txt"
 Name: "{group}\README"; Filename: "{app}\README.html"
 Name: "{group}\Uninstall"; Filename: "{uninstallexe}"
 
