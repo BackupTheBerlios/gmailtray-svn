@@ -1,3 +1,10 @@
+Version 0.2.1
+	* Lock around checking status
+	* gc.collect() gets called on timer
+	* Added "dist" option to Makefile
+	* Fixed typo in README
+	* Update URLs in README
+
 Version 0.2.0
 	* Text based configuration file
 	* First public release to BerliOS

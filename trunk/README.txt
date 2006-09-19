@@ -10,16 +10,16 @@ GmailTray is a *very simple* Gmail traybar notification program.
 
 Why?
 ====
-Because I needed one that will support "Gmail In Your Domain". And it took me
+Because I needed one that will support "Gmail For Your Domain". And it took me
 less that 2 hours to get the first version working.
 
 Where?
 ======
 HomePage:
-    http://developer.berlios.de/????
+    http://gmailtray.berlios.de/
 
 Downloads:
-    http://developer.berlios.de/????
+    http://developer.berlios.de/project/showfiles.php?group_id=7262
 
 How?
 ====
