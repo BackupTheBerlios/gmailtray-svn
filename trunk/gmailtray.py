@@ -8,6 +8,8 @@ from itertools import count
 import webbrowser
 import wx
 from dotdict import DotDict
+from threading import Lock
+import gc
 try:
     from version import VERSION
 except ImportError:
@@ -196,6 +198,7 @@ class GmailTray(wx.TaskBarIcon):
         wx.TaskBarIcon.__init__(self)
         self.set_icon(ICON_ERROR, "Connecting ...")
         self.num_new_messages = 0
+        self.lock = Lock()
 
         self.Bind(wx.EVT_TIMER, self.OnTimer)
         self.timer = wx.Timer(self) 
@@ -213,6 +216,10 @@ class GmailTray(wx.TaskBarIcon):
         self.Bind(wx.EVT_CLOSE, self.OnClose)
 
     def check_status(self):
+        # Non blocking lock
+        if not self.lock.acquire(0):
+            return
+
         try:
             new_message_ids = get_new_message_ids(load_config())
             if new_message_ids:
@@ -226,6 +233,8 @@ class GmailTray(wx.TaskBarIcon):
         except Exception: # FIXME: Catch more specific errors
             icon = ICON_ERROR
             tooltip = "Connection error"
+        finally:
+            self.lock.release()
 
         self.set_icon(icon, tooltip)
 
@@ -248,10 +257,12 @@ class GmailTray(wx.TaskBarIcon):
         menu.Append(self.TBMENU_CONFIG, "Configure ...")
         menu.AppendSeparator()
         menu.Append(self.TBMENU_CLOSE, "Exit")
+
         return menu
 
     def OnTimer(self, evt):
         self.check_status()
+        gc.collect()
 
     def OnConfig(self, evt):
         run_config()
