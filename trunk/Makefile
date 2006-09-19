@@ -1,9 +1,13 @@
 VERSION = $(shell cat VERSION)
 PYTHON = $(shell pyexe.py)
 INNO = $(shell innoexe.py)
-INSTALLER_BASE = gmailtray_$(VERSION)_setup
+BASENAME = gmailtray_$(VERSION)
+INSTALLER_BASE = $(BASENAME)_setup
 INSTALLER = $(INSTALLER_BASE).exe 
 EXTRA = README.html *.ico *.css LICENSE.txt ChangeLog
+ARCHDIR = $(subst _,-,$(BASENAME))
+ARCHIVE = $(ARCHDIR).tar.bz2
+SRCFILES = $(shell $(PYTHON) srcfiles.py)
 
 all:
 	@echo "Done :) (you probably want to run 'make installer')"
@@ -19,6 +23,14 @@ dist: gmailtray.py setup.py version.py $(EXTRA)
 
 README.html: README.txt
 	sed -e "s/_VERSION_/$(VERSION)/" $< | rst2html.py --stylesheet=style.css > $@
+
+srcdist: $(ARCHIVE)
+
+$(ARCHIVE): $(SRCFILES)
+	mkdir $(ARCHDIR)
+	cp $(SRCFILES) $(ARCHDIR)
+	tar -cjf $(ARCHIVE) $(ARCHDIR)
+	rm -fr $(ARCHDIR)
 
 clean:
 	rm -f version.py version.iss
